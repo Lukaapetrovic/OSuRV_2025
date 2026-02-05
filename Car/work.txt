@@ -22,11 +22,16 @@
 	- Merge Ultrasound support FW to Car control FW
 		- Car control FW:
 			FW/Arduino_Motor_Controller/Arduino_Motor_Controller.ino
+		- Ultrasound FW:
+			FW/KompletnoBLDCiServo/KompletnoBLDCiServo.ino
 	- Send distance measurement from Arduino to RPi
+		- 3 numbers of pulseIn result as integer
 		- fw_pkgs.hpp
 		- Arduino_Motor_Controller.ino
+	- Calculate distance
+		- ackibot_ws/src/ackibot_node/src/fw_node.cpp
 	- Publish /ultrasound Float32[]
-		- https://github.com/cxxx1828/ROS2-Robot-Car/blob/master/src/ackibot_node/src/fw_node.cpp
+		- ackibot_ws/src/ackibot_node/src/fw_node.cpp
 	- node for stopping
 	- node for parking sensor
 		- node for beeping
