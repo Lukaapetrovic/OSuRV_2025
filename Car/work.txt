@@ -11,6 +11,7 @@
 		https://github.com/sarakr10/OSuRV_2024_mns
 			- Ultrasound FW:
 				https://github.com/sarakr10/OSuRV_2024_mns/blob/main/KompletnoBLDCServo/KompletnoBLDCiServo/KompletnoBLDCiServo.ino
+			- HW PCB
 		https://www.youtube.com/shorts/5UKdKlVmVpg
 
 	- ROS1 support
