@@ -5,13 +5,24 @@
 #include <fcntl.h> // open() flags
 #include <string.h> // strerror()
 #include <errno.h> // errno
-
+#include <signal.h>	//za preide
+#include <stdlib.h>
 
 #define DEV_STREAM_FN "/dev/gpio_stream"
 
+int fd;
+
+/*void stop(int sig){
+		uint8_t motor_stop[3] = {'w', 2, 0};
+		write(fd, motor_stop, sizeof(motor_stop));
+		tcdrain(fd);
+		close(fd);
+		exit(0);
+}*/
+
 int main()
 {
-	int fd,r;
+	int r;
 	int smer_kazaljke = 1;	// pocetni smer
 	
 	fd = open(DEV_STREAM_FN, O_RDWR);
@@ -20,6 +31,9 @@ int main()
 		fprintf(stderr, "fd = %d %s\n", fd, strerror(-fd));
 		return 4;
 	}
+	
+	/*signal(SIGINT, stop);
+	signal(SIGTERM, stop);*/
 
 	// ccw
 	uint8_t set_p4_0[3] = {'w', 4, 0}; 
@@ -106,6 +120,7 @@ int main()
 			return 4;
 		}
 		usleep(100); 
+		
 
 		r = read(fd, (char*)&rd_val3, sizeof(rd_val3));
 		if(r != sizeof(rd_val3)){
@@ -120,22 +135,25 @@ int main()
 		//lijevi
 		if(rd_val){		
 			printf("Levi prekidac aktivan!\n");
-			//break;
+			write(fd, set_p4_1, sizeof(set_p4_1));
+			write(fd, set_p3_0, sizeof(set_p3_0));
+			smer_kazaljke = 1;
+			
 		}
 		if(rd_val2){
 			printf("Desni prekidac aktivan!\n");
 			
 			if(smer_kazaljke){
-				r = write(fd, set_p4_1, sizeof(set_p4_1));
-				if(r != sizeof(set_p4_1)){
+				r = write(fd, set_p4_0, sizeof(set_p4_0));
+				if(r != sizeof(set_p4_0)){
 				fprintf(stderr, "ERROR: write went wrong!\n");
-				return 4;
+				//return 4;
 				}
 				
-				r = write(fd, set_p3_0, sizeof(set_p3_0));
-				if(r != sizeof(set_p3_0)){
+				r = write(fd, set_p3_1, sizeof(set_p3_1));
+				if(r != sizeof(set_p3_1)){
 				fprintf(stderr, "ERROR: write went wrong!\n");
-				return 4;
+				//return 4;
 				}
 				
 				smer_kazaljke = 0;
