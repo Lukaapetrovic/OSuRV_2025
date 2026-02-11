@@ -28,7 +28,7 @@ Sistem za podizanje zastavica na osnovu klasifikacije audio snimka (muzike). PC/
 ## Tok rada
 
 1. PC učitava audio fajl i izvlači MFCC feature-e (reson biblioteka)
-2. ML model (TensorFlow) predviđa državu (spanija/srbija/jamajka)
+2. ML model (TensorFlow) predviđa državu (Španija/Srbija/Jamajka)
 3. PC šalje UDP paket sa rezultatom ka Raspberry Pi
 4. RPi prima poruku i prosleđuje komandu preko I2C-a ka Jetsonu
 5. Jetson aktivira odgovarajući stepper motor koji podiže zastavicu
@@ -75,8 +75,4 @@ Flags/SW/Motor_Ctrl/
 - **Real-time predikcija**: Šum na mikrofonu utiče na kvalitet predikcije
 - **Network setup**: IP adrese moraju biti podešene u kodu (PC ↔ RPi komunikacija)
 
-## Detaljna dokumentacija
-
-Za instalaciju zavisnosti, konfiguraciju I2C protokola i troubleshooting pogledaj:
-- `Flags/SW/Motor_Ctrl/README.md`
 
