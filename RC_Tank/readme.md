@@ -16,6 +16,8 @@ Both devices must be connected to the same network. Once the ROS 2 nodes are run
 the Raspberry Pi and a teleoperation node is started on the PC, the user can control the 
 tank using either input method.
 
+[Youtube Video](https://youtu.be/keiiRF_RTXY)
+
 ---
 
 ## System Overview
@@ -83,7 +85,7 @@ The command byte format is:
 1. Clone the repository
 ```bash
 git clone https://github.com/boskomit/OSuRV_2025.git
-cd RC_Tank/Tank/vezba06_kernel_space/ROS2/chasis_ws
+cd RC_Tank/Tank/vezba06_kernel_space/ROS2/chassis_ws
 ```
 2. Build the ROS2 workspace
 ```bash
@@ -103,7 +105,7 @@ Terminal 2 - Ackermann controller
 ```bash
 source /opt/ros/jazzy/setup.bash
 source install/setup.bash
-ros2 run wc_main simple_ackermann_steering_controller
+ros2 run wc_main simple_ackermann_controller
 ```
 4. Run step 3 faster (one terminal)
 ```bash
