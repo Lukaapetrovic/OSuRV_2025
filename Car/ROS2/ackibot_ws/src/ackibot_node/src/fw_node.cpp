@@ -420,9 +420,12 @@ void FW_Node::read_pkg() {
     // EMERGENCY STOP LOGIKA
     // Ako je prepreka bliža od 10cm (a nije 0, što može biti greška senzora)
     if (ultrasound_distances[0] > 0.1f && ultrasound_distances[0] < 10.0f) {
-        RCLCPP_WARN(this->get_logger(), "Emergency Stop! Distance: %.2f cm", ultrasound_distances[0]);
-        this->speed = 0;
-		//Dodati logiku da mozemo da idemo u rikverc da se udaljimo od prepreke
+		//Ukoliko pokusava da se krece napred kocimo, moze da ide samo u rikverc
+		if (this->speed > 0)
+		{
+			RCLCPP_WARN(this->get_logger(), "Emergency Stop! Distance: %.2f cm", ultrasound_distances[0]);
+        	this->speed = 0;
+		}
         write_pkg();
     }
 }
