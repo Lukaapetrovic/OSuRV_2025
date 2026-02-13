@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="test_aruco">
+    <Sequence>
+      <Sleep msec="1000"/>
+      <Aruco camera_select="front"
+             result_mask="{result_mask}"/>
+      <Switch6 case_1="1100"
+               case_2="0110"
+               case_3="0011"
+               case_4="1010"
+               case_5="0101"
+               case_6="1001"
+               variable="{result_mask}">
+        <AlwaysFailure/>
+        <AlwaysFailure/>
+        <AlwaysFailure/>
+        <AlwaysFailure/>
+        <AlwaysSuccess/>
+        <AlwaysFailure/>
+        <AlwaysFailure/>
+      </Switch6>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="Aruco"
+            editable="true">
+      <input_port name="camera_select"
+                  default="front"/>
+      <output_port name="result_mask"
+                   default="{result_mask}"/>
+    </Action>
+  </TreeNodesModel>
+
+</root>
