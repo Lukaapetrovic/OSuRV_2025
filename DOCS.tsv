@@ -3,7 +3,7 @@ Dron_1	Група 2 - Петак 8:30-11:00			TODO	TODO
 Dron_2	Група 3 - Четвртак 9:45-12:25			TODO	TODO
 Car	Група 1 - Четвртак 7:00-9:30			TODO	TODO
 Garbage_Sort	Група 3 - Четвртак 9:45-12:25		Trake	TODO	TODO
-Fishing	Група 2 - Петак 8:30-11:00			TODO	TODO
+Fishing	Група 2 - Петак 8:30-11:00		Senzor, steper	https://github.com/babic004/OSuRV_2025.git	https://www.youtube.com/watch?v=np8vvSq992Y
 Flags	Група 3 - Четвртак 9:45-12:25		Jetson shield	TODO	TODO
 Oximeter	Група 3 - Четвртак 9:45-12:25		senzori	TODO	TODO
 RC_Tank	Група 1 - Четвртак 7:00-9:30	tank chasis + camera	Tenk, RPI camera?	TODO	TODO
