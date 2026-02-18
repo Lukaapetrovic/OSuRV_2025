@@ -19,19 +19,21 @@
 		https://vm.tiktok.com/ZMSgtUbtJ
 
 - Tasks:
-	- Merge Ultrasound support FW to Car control FW
+	+ Merge Ultrasound support FW to Car control FW
 		- Car control FW:
 			FW/Arduino_Motor_Controller/Arduino_Motor_Controller.ino
 		- Ultrasound FW:
 			FW/KompletnoBLDCiServo/KompletnoBLDCiServo.ino
 	- Send distance measurement from Arduino to RPi
-		- 3 numbers of pulseIn result as integer
-		- fw_pkgs.hpp
+		- 3 numbers of pulseIn result as integer ? dodati kasnije
+		+ fw_pkgs.hpp
 		- Arduino_Motor_Controller.ino
-	- Calculate distance
+	+ Calculate distance
 		- ackibot_ws/src/ackibot_node/src/fw_node.cpp
 	- Publish /ultrasound Float32[]
 		- ackibot_ws/src/ackibot_node/src/fw_node.cpp
+		- ros2 topic echo /ultrasound
 	- node for stopping
+		- subscribuje /ultrasound
 	- node for parking sensor
 		- node for beeping
