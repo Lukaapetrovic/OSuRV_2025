@@ -22,8 +22,14 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //NOVO
-const int trigPin= A3;
-const int echoPin= 9;
+const int trigPin = A3;
+const int echoPin = 9;
+
+//const int trigPinRight = A4;
+//const int echoPinRight = A5;
+
+//const int trigPinLeft = 6;
+//const int echoPinLeft = 7;
 ///////////////////////////////////////////////////////////////////////////////
 
 // L298 settings.
