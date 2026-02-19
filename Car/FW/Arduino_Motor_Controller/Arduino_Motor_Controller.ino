@@ -531,7 +531,10 @@ uint32_t getPulseDuration() {
 
   // pulseIn vraća unsigned long (uint32_t), što predstavlja mikrosekunde
   uint32_t duration = pulseIn(echoPin, HIGH);
-  
+  /*test
+  Serial.print("Distance: ");
+  Serial.println(duration*.0343/2);
+  */
   return duration;
 }
 ///////////////////////////////////////////////////////////////////////////////
