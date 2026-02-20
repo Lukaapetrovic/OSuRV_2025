@@ -40,17 +40,17 @@ Prati ove korake tačnim redosledom kako bi izbegao greške u komunikaciji:
 
 1.  **Power On:** Uključi Raspberry Pi (Interni prekidač).
 2.  **Access:** Poveži se na Pi putem **SSH**.
-3.  **Scripts:**
-4.  ```bash
+3.  **Scripts:** Pokreni skriptu za joypad
+    ```bash
     cd ROS2/ackibot_ws/scripts
     ./mars_joys.sh
     ```
-5.  **Controller:** Upali joypad kombinacijom tastera **RB + HOME**.
-6.  **Run:** Pokreni glavni proces:
+4.  **Controller:** Upali joypad kombinacijom tastera **RB + HOME**.
+5.  **Run:** Pokreni glavni proces:
     ```bash
     ./ackibot_run_sbc.sh
     ```
-7.  **Motors:** Na samom kraju uključi **eksterni prekidač** za motore.
+6.  **Motors:** Na samom kraju uključi **eksterni prekidač** za motore.
 
 ---
 
