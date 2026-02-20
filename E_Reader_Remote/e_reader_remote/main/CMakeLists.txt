@@ -1,8 +1,8 @@
-set(srcs "esp_hid_device_main.c"
-         "esp_hid_gap.c")
-set(include_dirs ".")
+#set(COMPONENT_SRCS "main.c")
+#set(COMPONENT_ADD_INCLUDEDIRS "")
 
-idf_component_register(SRCS "${srcs}"
-                       INCLUDE_DIRS "${include_dirs}"
-                       REQUIRES esp_hid
-                       PRIV_REQUIRES nvs_flash)
+#register_component()
+
+idf_component_register(SRCS "main.c"
+                    PRIV_REQUIRES bt nvs_flash
+                    INCLUDE_DIRS ".")
