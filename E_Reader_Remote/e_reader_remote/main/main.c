@@ -13,6 +13,7 @@
 #include "nvs.h"
 #include "nvs_flash.h"
 #include "esp_gap_bt_api.h"
+#include "driver/gpio.h"
 #include <string.h>
 #include <inttypes.h>
 
@@ -20,8 +21,17 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 
-#define REPORT_PROTOCOL_MOUSE_REPORT_SIZE      (4)
-#define REPORT_BUFFER_SIZE                     REPORT_PROTOCOL_MOUSE_REPORT_SIZE
+#define REPORT_PROTOCOL_KEYBOARD_REPORT_SIZE   (8)
+#define REPORT_BUFFER_SIZE                     REPORT_PROTOCOL_KEYBOARD_REPORT_SIZE
+
+// GPIO pin definitions for e-reader remote
+#define GPIO_LEFT_ARROW     19
+#define GPIO_RIGHT_ARROW    21
+#define GPIO_INPUT_PIN_SEL  ((1ULL<<GPIO_LEFT_ARROW) | (1ULL<<GPIO_RIGHT_ARROW))
+
+// HID keyboard key codes
+#define HID_KEY_LEFT_ARROW   0x50
+#define HID_KEY_RIGHT_ARROW  0x4F
 
 static const char local_device_name[] = CONFIG_EXAMPLE_LOCAL_DEVICE_NAME;
 
@@ -29,49 +39,63 @@ typedef struct {
     esp_hidd_app_param_t app_param;
     esp_hidd_qos_param_t both_qos;
     uint8_t protocol_mode;
-    SemaphoreHandle_t mouse_mutex;
-    TaskHandle_t mouse_task_hdl;
+    SemaphoreHandle_t keyboard_mutex;
+    TaskHandle_t keyboard_task_hdl;
     uint8_t buffer[REPORT_BUFFER_SIZE];
-    int8_t x_dir;
 } local_param_t;
 
 static local_param_t s_local_param = {0};
 
-// HID report descriptor for a generic mouse. The contents of the report are:
-// 3 buttons, moving information for X and Y cursors, information for a wheel.
-uint8_t hid_mouse_descriptor[] = {
-    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
-    0x09, 0x02,                    // USAGE (Mouse)
-    0xa1, 0x01,                    // COLLECTION (Application)
-
-    0x09, 0x01,                    //   USAGE (Pointer)
-    0xa1, 0x00,                    //   COLLECTION (Physical)
-
-    0x05, 0x09,                    //     USAGE_PAGE (Button)
-    0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
-    0x29, 0x03,                    //     USAGE_MAXIMUM (Button 3)
-    0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
-    0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
-    0x95, 0x03,                    //     REPORT_COUNT (3)
-    0x75, 0x01,                    //     REPORT_SIZE (1)
-    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-    0x95, 0x01,                    //     REPORT_COUNT (1)
-    0x75, 0x05,                    //     REPORT_SIZE (5)
-    0x81, 0x03,                    //     INPUT (Cnst,Var,Abs)
-
-    0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
-    0x09, 0x30,                    //     USAGE (X)
-    0x09, 0x31,                    //     USAGE (Y)
-    0x09, 0x38,                    //     USAGE (Wheel)
-    0x15, 0x81,                    //     LOGICAL_MINIMUM (-127)
-    0x25, 0x7f,                    //     LOGICAL_MAXIMUM (127)
-    0x75, 0x08,                    //     REPORT_SIZE (8)
-    0x95, 0x03,                    //     REPORT_COUNT (3)
-    0x81, 0x06,                    //     INPUT (Data,Var,Rel)
-
-    0xc0,                          //   END_COLLECTION
-    0xc0                           // END_COLLECTION
+// HID report descriptor for a keyboard
+uint8_t hid_keyboard_descriptor[] = {
+    0x05, 0x01,        // Usage Page (Generic Desktop Ctrls)
+    0x09, 0x06,        // Usage (Keyboard)
+    0xA1, 0x01,        // Collection (Application)
+    0x85, 0x01,        //   Report ID (1)
+    0x05, 0x07,        //   Usage Page (Kbrd/Keypad)
+    0x19, 0xE0,        //   Usage Minimum (0xE0)
+    0x29, 0xE7,        //   Usage Maximum (0xE7)
+    0x15, 0x00,        //   Logical Minimum (0)
+    0x25, 0x01,        //   Logical Maximum (1)
+    0x75, 0x01,        //   Report Size (1)
+    0x95, 0x08,        //   Report Count (8)
+    0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0x95, 0x01,        //   Report Count (1)
+    0x75, 0x08,        //   Report Size (8)
+    0x81, 0x03,        //   Input (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0x95, 0x05,        //   Report Count (5)
+    0x75, 0x01,        //   Report Size (1)
+    0x05, 0x08,        //   Usage Page (LEDs)
+    0x19, 0x01,        //   Usage Minimum (Num Lock)
+    0x29, 0x05,        //   Usage Maximum (Kana)
+    0x91, 0x02,        //   Output (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0x95, 0x01,        //   Report Count (1)
+    0x75, 0x03,        //   Report Size (3)
+    0x91, 0x03,        //   Output (Const,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+    0x95, 0x05,        //   Report Count (5)
+    0x75, 0x08,        //   Report Size (8)
+    0x15, 0x00,        //   Logical Minimum (0)
+    0x25, 0x65,        //   Logical Maximum (101)
+    0x05, 0x07,        //   Usage Page (Kbrd/Keypad)
+    0x19, 0x00,        //   Usage Minimum (0x00)
+    0x29, 0x65,        //   Usage Maximum (0x65)
+    0x81, 0x00,        //   Input (Data,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
+    0xC0,              // End Collection
 };
+
+// GPIO setup function
+void setup_gpio(void)
+{
+    gpio_config_t io_conf = {};
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.mode = GPIO_MODE_INPUT;
+    io_conf.pin_bit_mask = GPIO_INPUT_PIN_SEL;
+    io_conf.pull_down_en = 0;
+    io_conf.pull_up_en = 1;  // Enable internal pull-ups
+    gpio_config(&io_conf);
+    
+    ESP_LOGI("GPIO", "GPIO configured - Left: %d, Right: %d", GPIO_LEFT_ARROW, GPIO_RIGHT_ARROW);
+}
 
 static char *bda2str(esp_bd_addr_t bda, char *str, size_t size)
 {
@@ -85,29 +109,26 @@ static char *bda2str(esp_bd_addr_t bda, char *str, size_t size)
     return str;
 }
 
-const int hid_mouse_descriptor_len = sizeof(hid_mouse_descriptor);
+const int hid_keyboard_descriptor_len = sizeof(hid_keyboard_descriptor);
 
 /**
  * @brief Integrity check of the report ID and report type for GET_REPORT request from HID host.
- *        Boot Protocol Mode requires report ID. For Report Protocol Mode, when the report descriptor
- *        does not declare report ID Global ITEMS, the report ID does not exist in the GET_REPORT request,
- *        and a value of 0 for report_id will occur in ESP_HIDD_GET_REPORT_EVT callback parameter.
  */
 bool check_report_id_type(uint8_t report_id, uint8_t report_type)
 {
     bool ret = false;
-    xSemaphoreTake(s_local_param.mouse_mutex, portMAX_DELAY);
+    xSemaphoreTake(s_local_param.keyboard_mutex, portMAX_DELAY);
     do {
         if (report_type != ESP_HIDD_REPORT_TYPE_INPUT) {
             break;
         }
         if (s_local_param.protocol_mode == ESP_HIDD_BOOT_MODE) {
-            if (report_id == ESP_HIDD_BOOT_REPORT_ID_MOUSE) {
+            if (report_id == ESP_HIDD_BOOT_REPORT_ID_KEYBOARD) {
                 ret = true;
                 break;
             }
         } else {
-            if (report_id == 0) {
+            if (report_id == 1) {  // Report ID for keyboard
                 ret = true;
                 break;
             }
@@ -115,60 +136,140 @@ bool check_report_id_type(uint8_t report_id, uint8_t report_type)
     } while (0);
 
     if (!ret) {
-        if (s_local_param.protocol_mode == ESP_HIDD_BOOT_MODE) {
-            esp_bt_hid_device_report_error(ESP_HID_PAR_HANDSHAKE_RSP_ERR_INVALID_REP_ID);
-        } else {
-            esp_bt_hid_device_report_error(ESP_HID_PAR_HANDSHAKE_RSP_ERR_INVALID_REP_ID);
-        }
+        esp_bt_hid_device_report_error(ESP_HID_PAR_HANDSHAKE_RSP_ERR_INVALID_REP_ID);
     }
-    xSemaphoreGive(s_local_param.mouse_mutex);
+    xSemaphoreGive(s_local_param.keyboard_mutex);
     return ret;
 }
 
-// send the buttons, change in x, and change in y
-void send_mouse_report(uint8_t buttons, char dx, char dy, char wheel)
+// Send keyboard report
+void send_keyboard_report(uint8_t modifier, uint8_t keycode)
 {
     uint8_t report_id;
     uint16_t report_size;
-    xSemaphoreTake(s_local_param.mouse_mutex, portMAX_DELAY);
+    xSemaphoreTake(s_local_param.keyboard_mutex, portMAX_DELAY);
+    
     if (s_local_param.protocol_mode == ESP_HIDD_REPORT_MODE) {
-        report_id = 0;
-        report_size = REPORT_PROTOCOL_MOUSE_REPORT_SIZE;
-        s_local_param.buffer[0] = buttons;
-        s_local_param.buffer[1] = dx;
-        s_local_param.buffer[2] = dy;
-        s_local_param.buffer[3] = wheel;
+        report_id = 1;  // Report ID for keyboard
+        report_size = REPORT_PROTOCOL_KEYBOARD_REPORT_SIZE;
+        s_local_param.buffer[0] = modifier;   // Modifier keys
+        s_local_param.buffer[1] = 0;          // Reserved
+        s_local_param.buffer[2] = keycode;    // Key code
+        s_local_param.buffer[3] = 0;          // Additional keys
+        s_local_param.buffer[4] = 0;
+        s_local_param.buffer[5] = 0;
+        s_local_param.buffer[6] = 0;
+        s_local_param.buffer[7] = 0;
     } else {
         // Boot Mode
-        report_id = ESP_HIDD_BOOT_REPORT_ID_MOUSE;
-        report_size = ESP_HIDD_BOOT_REPORT_SIZE_MOUSE - 1;
-        s_local_param.buffer[0] = buttons;
-        s_local_param.buffer[1] = dx;
-        s_local_param.buffer[2] = dy;
+        report_id = ESP_HIDD_BOOT_REPORT_ID_KEYBOARD;
+        report_size = ESP_HIDD_BOOT_REPORT_SIZE_KEYBOARD - 1;
+        s_local_param.buffer[0] = modifier;   // Modifier keys
+        s_local_param.buffer[1] = 0;          // Reserved
+        s_local_param.buffer[2] = keycode;    // Key code
+        s_local_param.buffer[3] = 0;          // Additional keys
+        s_local_param.buffer[4] = 0;
+        s_local_param.buffer[5] = 0;
+        s_local_param.buffer[6] = 0;
+        s_local_param.buffer[7] = 0;
     }
     esp_bt_hid_device_send_report(ESP_HIDD_REPORT_TYPE_INTRDATA, report_id, report_size, s_local_param.buffer);
-    xSemaphoreGive(s_local_param.mouse_mutex);
+    xSemaphoreGive(s_local_param.keyboard_mutex);
 }
 
-// move the mouse left and right
-void mouse_move_task(void *pvParameters)
+// Send a single key press (press + release)
+void send_key(uint8_t keycode, const char* key_name)
 {
-    const char *TAG = "mouse_move_task";
+    ESP_LOGI("KEYBOARD", "Sending %s key", key_name);
+    
+    // Send key press
+    send_keyboard_report(0, keycode);
+    vTaskDelay(50 / portTICK_PERIOD_MS);  // Hold for 50ms
+    
+    // Send key release
+    send_keyboard_report(0, 0);
+}
 
-    ESP_LOGI(TAG, "starting");
+// GPIO-based keyboard task for e-reader remote
+void keyboard_task(void *pvParameters)
+{
+    const char *TAG = "keyboard_task";
+
+    ESP_LOGI(TAG, "E-Reader Remote Keyboard Task Starting");
+    ESP_LOGI(TAG, "GPIO %d = Left Arrow (Previous Page)", GPIO_LEFT_ARROW);
+    ESP_LOGI(TAG, "GPIO %d = Right Arrow (Next Page)", GPIO_RIGHT_ARROW);
+    
+    static bool left_last_reading = true;    // Last GPIO reading
+    static bool right_last_reading = true;
+    static bool left_stable_state = true;   // Last confirmed stable state
+    static bool right_stable_state = true;
+    static TickType_t left_last_change = 0;
+    static TickType_t right_last_change = 0;
+    
+    const TickType_t debounce_delay = 50 / portTICK_PERIOD_MS;  // Back to 50ms
+    
+    // Log initial GPIO states
+    ESP_LOGI(TAG, "Initial GPIO states - Left: %d, Right: %d", 
+             gpio_get_level(GPIO_LEFT_ARROW), gpio_get_level(GPIO_RIGHT_ARROW));
+    
     for (;;) {
-        s_local_param.x_dir = 1;
-        int8_t step = 10;
-        for (int i = 0; i < 2; i++) {
-            xSemaphoreTake(s_local_param.mouse_mutex, portMAX_DELAY);
-            s_local_param.x_dir *= -1;
-            xSemaphoreGive(s_local_param.mouse_mutex);
-            for (int j = 0; j < 100; j++) {
-                send_mouse_report(0, s_local_param.x_dir * step, 0, 0);
-                vTaskDelay(50 / portTICK_PERIOD_MS);
+        TickType_t now = xTaskGetTickCount();
+        
+        // Read current GPIO states
+        bool left_current = gpio_get_level(GPIO_LEFT_ARROW);
+        bool right_current = gpio_get_level(GPIO_RIGHT_ARROW);
+        
+        // LEFT BUTTON LOGIC
+        if (left_current != left_last_reading) {
+            // Reading changed, reset the debounce timer
+            left_last_change = now;
+            ESP_LOGI(TAG, "Left GPIO changed: %d -> %d", left_last_reading, left_current);
+        }
+        left_last_reading = left_current;
+        
+        // Check if enough time has passed for a stable reading
+        if ((now - left_last_change) > debounce_delay) {
+            // Reading has been stable for debounce period
+            if (left_current != left_stable_state) {
+                // State change confirmed
+                if (left_stable_state == true && left_current == false) {
+                    // Button pressed (1 -> 0)
+                    ESP_LOGI(TAG, "LEFT BUTTON PRESSED!");
+                    send_key(HID_KEY_LEFT_ARROW, "LEFT ARROW");
+                } else if (left_stable_state == false && left_current == true) {
+                    // Button released (0 -> 1)
+                    ESP_LOGI(TAG, "LEFT BUTTON RELEASED!");
+                }
+                left_stable_state = left_current;
             }
         }
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        
+        // RIGHT BUTTON LOGIC (same pattern)
+        if (right_current != right_last_reading) {
+            // Reading changed, reset the debounce timer
+            right_last_change = now;
+            ESP_LOGI(TAG, "Right GPIO changed: %d -> %d", right_last_reading, right_current);
+        }
+        right_last_reading = right_current;
+        
+        // Check if enough time has passed for a stable reading
+        if ((now - right_last_change) > debounce_delay) {
+            // Reading has been stable for debounce period
+            if (right_current != right_stable_state) {
+                // State change confirmed
+                if (right_stable_state == true && right_current == false) {
+                    // Button pressed (1 -> 0)
+                    ESP_LOGI(TAG, "RIGHT BUTTON PRESSED!");
+                    send_key(HID_KEY_RIGHT_ARROW, "RIGHT ARROW");
+                } else if (right_stable_state == false && right_current == true) {
+                    // Button released (0 -> 1)
+                    ESP_LOGI(TAG, "RIGHT BUTTON RELEASED!");
+                }
+                right_stable_state = right_current;
+            }
+        }
+        
+        vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }
 
@@ -227,22 +328,22 @@ void esp_bt_gap_cb(esp_bt_gap_cb_event_t event, esp_bt_gap_cb_param_t *param)
 
 void bt_app_task_start_up(void)
 {
-    s_local_param.mouse_mutex = xSemaphoreCreateMutex();
+    s_local_param.keyboard_mutex = xSemaphoreCreateMutex();
     memset(s_local_param.buffer, 0, REPORT_BUFFER_SIZE);
-    xTaskCreate(mouse_move_task, "mouse_move_task", 4 * 1024, NULL, configMAX_PRIORITIES - 3, &s_local_param.mouse_task_hdl);
+    xTaskCreate(keyboard_task, "keyboard_task", 4 * 1024, NULL, configMAX_PRIORITIES - 3, &s_local_param.keyboard_task_hdl);
     return;
 }
 
 void bt_app_task_shut_down(void)
 {
-    if (s_local_param.mouse_task_hdl) {
-        vTaskDelete(s_local_param.mouse_task_hdl);
-        s_local_param.mouse_task_hdl = NULL;
+    if (s_local_param.keyboard_task_hdl) {
+        vTaskDelete(s_local_param.keyboard_task_hdl);
+        s_local_param.keyboard_task_hdl = NULL;
     }
 
-    if (s_local_param.mouse_mutex) {
-        vSemaphoreDelete(s_local_param.mouse_mutex);
-        s_local_param.mouse_mutex = NULL;
+    if (s_local_param.keyboard_mutex) {
+        vSemaphoreDelete(s_local_param.keyboard_mutex);
+        s_local_param.keyboard_mutex = NULL;
     }
     return;
 }
@@ -336,16 +437,16 @@ void esp_bt_hidd_cb(esp_hidd_cb_event_t event, esp_hidd_cb_param_t *param)
             uint8_t report_id;
             uint16_t report_len;
             if (s_local_param.protocol_mode == ESP_HIDD_REPORT_MODE) {
-                report_id = 0;
-                report_len = REPORT_PROTOCOL_MOUSE_REPORT_SIZE;
+                report_id = 1;  // Keyboard report ID
+                report_len = REPORT_PROTOCOL_KEYBOARD_REPORT_SIZE;
             } else {
                 // Boot Mode
-                report_id = ESP_HIDD_BOOT_REPORT_ID_MOUSE;
-                report_len = ESP_HIDD_BOOT_REPORT_SIZE_MOUSE - 1;
+                report_id = ESP_HIDD_BOOT_REPORT_ID_KEYBOARD;
+                report_len = ESP_HIDD_BOOT_REPORT_SIZE_KEYBOARD - 1;
             }
-            xSemaphoreTake(s_local_param.mouse_mutex, portMAX_DELAY);
+            xSemaphoreTake(s_local_param.keyboard_mutex, portMAX_DELAY);
             esp_bt_hid_device_send_report(param->get_report.report_type, report_id, report_len, s_local_param.buffer);
-            xSemaphoreGive(s_local_param.mouse_mutex);
+            xSemaphoreGive(s_local_param.keyboard_mutex);
         } else {
             ESP_LOGE(TAG, "check_report_id failed!");
         }
@@ -357,15 +458,12 @@ void esp_bt_hidd_cb(esp_hidd_cb_event_t event, esp_hidd_cb_param_t *param)
         ESP_LOGI(TAG, "ESP_HIDD_SET_PROTOCOL_EVT");
         if (param->set_protocol.protocol_mode == ESP_HIDD_BOOT_MODE) {
             ESP_LOGI(TAG, "  - boot protocol");
-            xSemaphoreTake(s_local_param.mouse_mutex, portMAX_DELAY);
-            s_local_param.x_dir = -1;
-            xSemaphoreGive(s_local_param.mouse_mutex);
         } else if (param->set_protocol.protocol_mode == ESP_HIDD_REPORT_MODE) {
             ESP_LOGI(TAG, "  - report protocol");
         }
-        xSemaphoreTake(s_local_param.mouse_mutex, portMAX_DELAY);
+        xSemaphoreTake(s_local_param.keyboard_mutex, portMAX_DELAY);
         s_local_param.protocol_mode = param->set_protocol.protocol_mode;
-        xSemaphoreGive(s_local_param.mouse_mutex);
+        xSemaphoreGive(s_local_param.keyboard_mutex);
         break;
     case ESP_HIDD_INTR_DATA_EVT:
         ESP_LOGI(TAG, "ESP_HIDD_INTR_DATA_EVT");
@@ -396,12 +494,17 @@ void app_main(void)
     esp_err_t ret;
     char bda_str[18] = {0};
 
+    ESP_LOGI(TAG, "Starting E-Reader Remote (Classic BT Keyboard)");
+
     ret = nvs_flash_init();
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
         ESP_ERROR_CHECK(nvs_flash_erase());
         ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK( ret );
+
+    // Setup GPIO for e-reader remote buttons
+    setup_gpio();
 
     ESP_ERROR_CHECK(esp_bt_controller_mem_release(ESP_BT_MODE_BLE));
 
@@ -438,34 +541,33 @@ void app_main(void)
     ESP_LOGI(TAG, "setting device name");
     esp_bt_gap_set_device_name(local_device_name);
 
-    ESP_LOGI(TAG, "setting cod major, peripheral");
+    ESP_LOGI(TAG, "setting cod major, peripheral keyboard");
     esp_bt_cod_t cod = {0};
     cod.major = ESP_BT_COD_MAJOR_DEV_PERIPHERAL;
-    cod.minor = ESP_BT_COD_MINOR_PERIPHERAL_POINTING;
+    cod.minor = ESP_BT_COD_MINOR_PERIPHERAL_KEYBOARD;  // Keyboard device
     esp_bt_gap_set_cod(cod, ESP_BT_SET_COD_MAJOR_MINOR);
 
     vTaskDelay(2000 / portTICK_PERIOD_MS);
 
     // Initialize HID SDP information and L2CAP parameters.
-    // to be used in the call of `esp_bt_hid_device_register_app` after profile initialization finishes
     do {
-        s_local_param.app_param.name = "Mouse";
-        s_local_param.app_param.description = "Mouse Example";
+        s_local_param.app_param.name = "E-Reader Remote";
+        s_local_param.app_param.description = "ESP32 E-Reader Remote Control";
         s_local_param.app_param.provider = "ESP32";
-        s_local_param.app_param.subclass = ESP_HID_CLASS_MIC; // keep same with minor class of COD
-        s_local_param.app_param.desc_list = hid_mouse_descriptor;
-        s_local_param.app_param.desc_list_len = hid_mouse_descriptor_len;
+        s_local_param.app_param.subclass = ESP_HID_CLASS_KBD; // Keyboard class
+        s_local_param.app_param.desc_list = hid_keyboard_descriptor;
+        s_local_param.app_param.desc_list_len = hid_keyboard_descriptor_len;
 
-        memset(&s_local_param.both_qos, 0, sizeof(esp_hidd_qos_param_t)); // don't set the qos parameters
+        memset(&s_local_param.both_qos, 0, sizeof(esp_hidd_qos_param_t));
     } while (0);
 
-    // Report Protocol Mode is the default mode, according to Bluetooth HID specification
+    // Report Protocol Mode is the default mode
     s_local_param.protocol_mode = ESP_HIDD_REPORT_MODE;
 
     ESP_LOGI(TAG, "register hid device callback");
     esp_bt_hid_device_register_callback(esp_bt_hidd_cb);
 
-    ESP_LOGI(TAG, "starting hid device");
+    ESP_LOGI(TAG, "starting hid keyboard device");
     esp_bt_hid_device_init();
 
 #if (CONFIG_EXAMPLE_SSP_ENABLED == true)
@@ -484,5 +586,8 @@ void app_main(void)
     esp_bt_gap_set_pin(pin_type, 0, pin_code);
 
     ESP_LOGI(TAG, "Own address:[%s]", bda2str((uint8_t *)esp_bt_dev_get_address(), bda_str, sizeof(bda_str)));
-    ESP_LOGI(TAG, "exiting");
+    ESP_LOGI(TAG, "E-Reader Remote ready!");
+    ESP_LOGI(TAG, "GPIO %d = Left Arrow (Previous Page)", GPIO_LEFT_ARROW);
+    ESP_LOGI(TAG, "GPIO %d = Right Arrow (Next Page)", GPIO_RIGHT_ARROW);
+    ESP_LOGI(TAG, "Connect buttons: one side to GPIO, other side to GND");
 }
