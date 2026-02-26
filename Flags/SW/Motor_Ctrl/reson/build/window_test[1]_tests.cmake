@@ -1,0 +1,7 @@
+add_test([=[Window.HannHasZeroEndpointsOnOnes]=]  /home/petar/Documents/FAKS/Projekti/reson/build/window_test [==[--gtest_filter=Window.HannHasZeroEndpointsOnOnes]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Window.HannHasZeroEndpointsOnOnes]=]  PROPERTIES WORKING_DIRECTORY /home/petar/Documents/FAKS/Projekti/reson/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[Window.HammingHasApprox008EndpointsOnOnes]=]  /home/petar/Documents/FAKS/Projekti/reson/build/window_test [==[--gtest_filter=Window.HammingHasApprox008EndpointsOnOnes]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Window.HammingHasApprox008EndpointsOnOnes]=]  PROPERTIES WORKING_DIRECTORY /home/petar/Documents/FAKS/Projekti/reson/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[Window.ApplyWindowScalesSamples]=]  /home/petar/Documents/FAKS/Projekti/reson/build/window_test [==[--gtest_filter=Window.ApplyWindowScalesSamples]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[Window.ApplyWindowScalesSamples]=]  PROPERTIES WORKING_DIRECTORY /home/petar/Documents/FAKS/Projekti/reson/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  window_test_TESTS Window.HannHasZeroEndpointsOnOnes Window.HammingHasApprox008EndpointsOnOnes Window.ApplyWindowScalesSamples)

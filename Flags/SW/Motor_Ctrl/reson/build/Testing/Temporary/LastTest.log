@@ -1,0 +1,300 @@
+Start testing: Jan 18 17:35 CET
+----------------------------------------------------------
+1/11 Testing: CoreFrameSpectre.IndexingAndLength
+1/11 Test: CoreFrameSpectre.IndexingAndLength
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/fft_test" "--gtest_filter=CoreFrameSpectre.IndexingAndLength" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"CoreFrameSpectre.IndexingAndLength" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = CoreFrameSpectre.IndexingAndLength
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from CoreFrameSpectre
+[ RUN      ] CoreFrameSpectre.IndexingAndLength
+[       OK ] CoreFrameSpectre.IndexingAndLength (0 ms)
+[----------] 1 test from CoreFrameSpectre (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"CoreFrameSpectre.IndexingAndLength" end time: Jan 18 17:35 CET
+"CoreFrameSpectre.IndexingAndLength" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/11 Testing: FFT.ImpulseAtZeroGivesFlatSpectrum
+2/11 Test: FFT.ImpulseAtZeroGivesFlatSpectrum
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/fft_test" "--gtest_filter=FFT.ImpulseAtZeroGivesFlatSpectrum" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"FFT.ImpulseAtZeroGivesFlatSpectrum" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = FFT.ImpulseAtZeroGivesFlatSpectrum
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from FFT
+[ RUN      ] FFT.ImpulseAtZeroGivesFlatSpectrum
+[       OK ] FFT.ImpulseAtZeroGivesFlatSpectrum (0 ms)
+[----------] 1 test from FFT (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"FFT.ImpulseAtZeroGivesFlatSpectrum" end time: Jan 18 17:35 CET
+"FFT.ImpulseAtZeroGivesFlatSpectrum" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/11 Testing: FFT.ConstantSignalHasDCOnly
+3/11 Test: FFT.ConstantSignalHasDCOnly
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/fft_test" "--gtest_filter=FFT.ConstantSignalHasDCOnly" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"FFT.ConstantSignalHasDCOnly" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = FFT.ConstantSignalHasDCOnly
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from FFT
+[ RUN      ] FFT.ConstantSignalHasDCOnly
+[       OK ] FFT.ConstantSignalHasDCOnly (0 ms)
+[----------] 1 test from FFT (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"FFT.ConstantSignalHasDCOnly" end time: Jan 18 17:35 CET
+"FFT.ConstantSignalHasDCOnly" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/11 Testing: Helpers.ParsevalHoldsWithPowerSpectrum
+4/11 Test: Helpers.ParsevalHoldsWithPowerSpectrum
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/fft_test" "--gtest_filter=Helpers.ParsevalHoldsWithPowerSpectrum" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"Helpers.ParsevalHoldsWithPowerSpectrum" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Helpers.ParsevalHoldsWithPowerSpectrum
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Helpers
+[ RUN      ] Helpers.ParsevalHoldsWithPowerSpectrum
+[       OK ] Helpers.ParsevalHoldsWithPowerSpectrum (0 ms)
+[----------] 1 test from Helpers (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Helpers.ParsevalHoldsWithPowerSpectrum" end time: Jan 18 17:35 CET
+"Helpers.ParsevalHoldsWithPowerSpectrum" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/11 Testing: Helpers.MelConversionsRoughInverse
+5/11 Test: Helpers.MelConversionsRoughInverse
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/fft_test" "--gtest_filter=Helpers.MelConversionsRoughInverse" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"Helpers.MelConversionsRoughInverse" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Helpers.MelConversionsRoughInverse
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Helpers
+[ RUN      ] Helpers.MelConversionsRoughInverse
+[       OK ] Helpers.MelConversionsRoughInverse (0 ms)
+[----------] 1 test from Helpers (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Helpers.MelConversionsRoughInverse" end time: Jan 18 17:35 CET
+"Helpers.MelConversionsRoughInverse" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/11 Testing: Helpers.LogCompressionAndDctReturnFinite
+6/11 Test: Helpers.LogCompressionAndDctReturnFinite
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/fft_test" "--gtest_filter=Helpers.LogCompressionAndDctReturnFinite" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"Helpers.LogCompressionAndDctReturnFinite" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Helpers.LogCompressionAndDctReturnFinite
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Helpers
+[ RUN      ] Helpers.LogCompressionAndDctReturnFinite
+[       OK ] Helpers.LogCompressionAndDctReturnFinite (0 ms)
+[----------] 1 test from Helpers (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Helpers.LogCompressionAndDctReturnFinite" end time: Jan 18 17:35 CET
+"Helpers.LogCompressionAndDctReturnFinite" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/11 Testing: MelFilterBank.NormalizedFiltersHaveUnitSum
+7/11 Test: MelFilterBank.NormalizedFiltersHaveUnitSum
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/pipeline_test" "--gtest_filter=MelFilterBank.NormalizedFiltersHaveUnitSum" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"MelFilterBank.NormalizedFiltersHaveUnitSum" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = MelFilterBank.NormalizedFiltersHaveUnitSum
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from MelFilterBank
+[ RUN      ] MelFilterBank.NormalizedFiltersHaveUnitSum
+[       OK ] MelFilterBank.NormalizedFiltersHaveUnitSum (81 ms)
+[----------] 1 test from MelFilterBank (81 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (81 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"MelFilterBank.NormalizedFiltersHaveUnitSum" end time: Jan 18 17:35 CET
+"MelFilterBank.NormalizedFiltersHaveUnitSum" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/11 Testing: MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals
+8/11 Test: MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/pipeline_test" "--gtest_filter=MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from MFCCPipeline
+[ RUN      ] MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals
+[       OK ] MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals (1 ms)
+[----------] 1 test from MFCCPipeline (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (1 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals" end time: Jan 18 17:35 CET
+"MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/11 Testing: Window.HannHasZeroEndpointsOnOnes
+9/11 Test: Window.HannHasZeroEndpointsOnOnes
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/window_test" "--gtest_filter=Window.HannHasZeroEndpointsOnOnes" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"Window.HannHasZeroEndpointsOnOnes" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Window.HannHasZeroEndpointsOnOnes
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Window
+[ RUN      ] Window.HannHasZeroEndpointsOnOnes
+[       OK ] Window.HannHasZeroEndpointsOnOnes (0 ms)
+[----------] 1 test from Window (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Window.HannHasZeroEndpointsOnOnes" end time: Jan 18 17:35 CET
+"Window.HannHasZeroEndpointsOnOnes" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/11 Testing: Window.HammingHasApprox008EndpointsOnOnes
+10/11 Test: Window.HammingHasApprox008EndpointsOnOnes
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/window_test" "--gtest_filter=Window.HammingHasApprox008EndpointsOnOnes" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"Window.HammingHasApprox008EndpointsOnOnes" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Window.HammingHasApprox008EndpointsOnOnes
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Window
+[ RUN      ] Window.HammingHasApprox008EndpointsOnOnes
+[       OK ] Window.HammingHasApprox008EndpointsOnOnes (0 ms)
+[----------] 1 test from Window (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Window.HammingHasApprox008EndpointsOnOnes" end time: Jan 18 17:35 CET
+"Window.HammingHasApprox008EndpointsOnOnes" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/11 Testing: Window.ApplyWindowScalesSamples
+11/11 Test: Window.ApplyWindowScalesSamples
+Command: "/home/petar/Documents/FAKS/Projekti/reson/build/window_test" "--gtest_filter=Window.ApplyWindowScalesSamples" "--gtest_also_run_disabled_tests"
+Directory: /home/petar/Documents/FAKS/Projekti/reson/build
+"Window.ApplyWindowScalesSamples" start time: Jan 18 17:35 CET
+Output:
+----------------------------------------------------------
+Running main() from /home/petar/Documents/FAKS/Projekti/reson/build/_deps/googletest-src/googletest/src/gtest_main.cc
+Note: Google Test filter = Window.ApplyWindowScalesSamples
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Window
+[ RUN      ] Window.ApplyWindowScalesSamples
+[       OK ] Window.ApplyWindowScalesSamples (0 ms)
+[----------] 1 test from Window (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"Window.ApplyWindowScalesSamples" end time: Jan 18 17:35 CET
+"Window.ApplyWindowScalesSamples" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jan 18 17:35 CET
