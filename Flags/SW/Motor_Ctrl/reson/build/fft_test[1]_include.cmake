@@ -1,0 +1,5 @@
+if(EXISTS "/home/petar/Documents/FAKS/Projekti/reson/build/fft_test[1]_tests.cmake")
+  include("/home/petar/Documents/FAKS/Projekti/reson/build/fft_test[1]_tests.cmake")
+else()
+  add_test(fft_test_NOT_BUILT fft_test_NOT_BUILT)
+endif()

@@ -1,0 +1,5 @@
+add_test([=[MelFilterBank.NormalizedFiltersHaveUnitSum]=]  /home/petar/Documents/FAKS/Projekti/reson/build/pipeline_test [==[--gtest_filter=MelFilterBank.NormalizedFiltersHaveUnitSum]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[MelFilterBank.NormalizedFiltersHaveUnitSum]=]  PROPERTIES WORKING_DIRECTORY /home/petar/Documents/FAKS/Projekti/reson/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+add_test([=[MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals]=]  /home/petar/Documents/FAKS/Projekti/reson/build/pipeline_test [==[--gtest_filter=MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals]==] --gtest_also_run_disabled_tests)
+set_tests_properties([=[MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals]=]  PROPERTIES WORKING_DIRECTORY /home/petar/Documents/FAKS/Projekti/reson/build SKIP_REGULAR_EXPRESSION [==[\[  SKIPPED \]]==])
+set(  pipeline_test_TESTS MelFilterBank.NormalizedFiltersHaveUnitSum MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals)

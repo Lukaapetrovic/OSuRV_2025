@@ -1,0 +1,30 @@
+Autor: Andrej Gobor
+Date: 2.September 2022
+
+Library:
+    AFMotor.h
+
+How to connect(unipolar motor):
+    Connector is next to the reset button.
+
+        M1      GND       M2
+    (Red Grey) Black (Blue Yellow)
+
+    M1 is labeled next to first hole that connects the red wire. Then goes the gray wire and ext. Connect the rest of the wires in the order towards the reset button.
+
+
+How to connect(bipolar motor):
+    Connector is not next to the reset button. It's close to a capacitor.
+
+          M3                  M4
+    (Black Green) Nothing (Blue Red)
+
+    The fist hole that connects next to the capacitor is red. Then goes blue and ext. You continue connecting away from the capacitor. That means you start connecting the M4 wires first.
+
+Jumper settings:
+	PWR jumper to be open.
+	Motors are then supplied from power port, not by Arduino's VIN,
+	and Arduino must be supplied by its own supply.
+
+Notes:
+    The motors work fine with 5V.

@@ -1,0 +1,10 @@
+
+- Most important:
+	http://wiki.sunfounder.cc/images/f/ff/L293D_schematic.png
+	https://www.ti.com/lit/ds/symlink/l293.pdf
+	http://wiring.org.co/learning/topics/steppermotor.html
+- Less important:
+	https://www.instructables.com/4-5-6-and-8-wire-Stepper-Motors/
+	https://lastminuteengineers.com/l293d-motor-driver-shield-arduino-tutorial/
+	https://create.arduino.cc/projecthub/electropeak/arduino-l293d-motor-driver-shield-tutorial-c1ac9b
+	https://github.com/CuriosityGym/MotorDriver

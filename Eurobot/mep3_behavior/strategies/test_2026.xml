@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="test_aruco">
+    <Sequence>
+      <Sleep msec="1000"/>
+      <Aruco camera_select="front"/>
+      <Parallel failure_count="1"
+                success_count="-1">
+        <IfThenElse>
+          <ScriptCondition code="(aruco_mask &amp; 0x01) != 0"/>
+          <JointPosition instance="m11"
+                         max_effort="0"
+                         max_velocity="180"
+                         position="160"
+                         tolerance="10"
+                         feedback_effort="{feedback_effort}"
+                         feedback_position="{feedback_position}"
+                         result="{result}"
+                         command_mode="0"/>
+          <JointPosition instance="m11"
+                         max_effort="0"
+                         max_velocity="180"
+                         position="250"
+                         tolerance="10"
+                         feedback_effort="{feedback_effort}"
+                         feedback_position="{feedback_position}"
+                         result="{result}"
+                         command_mode="0"/>
+        </IfThenElse>
+        <IfThenElse>
+          <ScriptCondition code="(aruco_mask &amp; 0x02) != 0"/>
+          <JointPosition instance="m13"
+                         max_effort="0"
+                         max_velocity="180"
+                         position="190"
+                         tolerance="10"
+                         feedback_effort="{feedback_effort}"
+                         feedback_position="{feedback_position}"
+                         result="{result}"
+                         command_mode="0"/>
+          <JointPosition instance="m13"
+                         max_effort="0"
+                         max_velocity="180"
+                         position="230"
+                         tolerance="10"
+                         feedback_effort="{feedback_effort}"
+                         feedback_position="{feedback_position}"
+                         result="{result}"
+                         command_mode="0"/>
+        </IfThenElse>
+        <IfThenElse>
+          <ScriptCondition code="(aruco_mask &amp; 0x04) != 0"/>
+          <JointPosition instance="m15"
+                         max_effort="0"
+                         max_velocity="180"
+                         position="155"
+                         tolerance="10"
+                         feedback_effort="{feedback_effort}"
+                         feedback_position="{feedback_position}"
+                         result="{result}"
+                         command_mode="0"/>
+          <JointPosition instance="m15"
+                         max_effort="0"
+                         max_velocity="180"
+                         position="240"
+                         tolerance="10"
+                         feedback_effort="{feedback_effort}"
+                         feedback_position="{feedback_position}"
+                         result="{result}"
+                         command_mode="0"/>
+        </IfThenElse>
+        <IfThenElse>
+          <ScriptCondition code="(aruco_mask &amp; 0x08) != 0"/>
+          <JointPosition instance="m17"
+                         max_effort="0"
+                         max_velocity="180"
+                         position="70"
+                         tolerance="10"
+                         feedback_effort="{feedback_effort}"
+                         feedback_position="{feedback_position}"
+                         result="{result}"
+                         command_mode="0"/>
+          <JointPosition instance="m17"
+                         max_effort="0"
+                         max_velocity="180"
+                         position="160"
+                         tolerance="10"
+                         feedback_effort="{feedback_effort}"
+                         feedback_position="{feedback_position}"
+                         result="{result}"
+                         command_mode="0"/>
+        </IfThenElse>
+      </Parallel>
+      <AlwaysFailure/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Action ID="Aruco"
+            editable="true">
+      <input_port name="camera_select"
+                  default="front"/>
+    </Action>
+    <Action ID="JointPosition"
+            editable="true">
+      <input_port name="instance"/>
+      <input_port name="max_effort"
+                  default="0"/>
+      <input_port name="max_velocity"
+                  default="180"/>
+      <input_port name="position"/>
+      <input_port name="tolerance"
+                  default="10"/>
+      <output_port name="feedback_effort"
+                   default="{feedback_effort}"/>
+      <output_port name="feedback_position"
+                   default="{feedback_position}"/>
+      <output_port name="result"
+                   default="{result}"/>
+      <input_port name="command_mode"
+                  default="0"/>
+    </Action>
+  </TreeNodesModel>
+
+</root>

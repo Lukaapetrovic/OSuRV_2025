@@ -1,0 +1,13 @@
+CoreFrameSpectre.IndexingAndLength 2 0.00103832
+FFT.ImpulseAtZeroGivesFlatSpectrum 3 0.000882859
+FFT.ConstantSignalHasDCOnly 3 0.000811356
+Helpers.ParsevalHoldsWithPowerSpectrum 3 0.000700096
+Helpers.MelConversionsRoughInverse 3 0.000623984
+Helpers.LogCompressionAndDctReturnFinite 3 0.00063953
+MelFilterBank.ApplyRejectsWrongInputSize 0 0
+MelFilterBank.NormalizedFiltersHaveUnitSum 2 0.0414858
+MFCCPipeline.ReturnsExpectedSizeAndFiniteForCommonSignals 3 0.00111514
+Window.HannHasZeroEndpointsOnOnes 3 0.000634955
+Window.HammingHasApprox008EndpointsOnOnes 3 0.000565439
+Window.ApplyWindowScalesSamples 2 0.000938155
+---

@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -flto -Wl,--dependency-file=CMakeFiles/reson.dir/link.d -shared  -o reson.cpython-314-x86_64-linux-gnu.so CMakeFiles/reson.dir/bindings/python_module.cpp.o
