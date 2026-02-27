@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4" project_name="Project">
+    <include path="blue_new_a.xml"/>
+    <include path="blue_new_base.xml"/>
+    <include path="blue_new_base_a.xml"/>
+    <include path="blue_new_base_d.xml"/>
+    <include path="blue_new_base_u.xml"/>
+    <include path="blue_new_d.xml"/>
+    <include path="blue_new_s.xml"/>
+    <include path="blue_new_ss.xml"/>
+    <include path="blue_new_u.xml"/>
+    <include path="blue_panel_simple.xml"/>
+    <include path="blue_simple.xml"/>
+    <include path="blue_simple_a.xml"/>
+    <include path="blue_simple_m.xml"/>
+    <include path="drop_fork_down.xml"/>
+    <include path="homologation.xml"/>
+    <include path="init.xml"/>
+    <include path="move_type.xml"/>
+    <include path="test_2025.xml"/>
+    <include path="test_2026.xml"/>
+    <include path="timeout.xml"/>
+    <include path="try_move_weed.xml"/>
+    <include path="try_pick_up_pots.xml"/>
+    <include path="try_pick_up_weed.xml"/>
+    <include path="try_pickup_weed.xml"/>
+    <include path="try_plenter.xml"/>
+    <include path="try_put_field.xml"/>
+    <include path="try_put_plenter.xml"/>
+    <include path="try_put_simple.xml"/>
+    <include path="try_translate.xml"/>
+    <include path="yellow_new_a.xml"/>
+    <include path="yellow_new_base.xml"/>
+    <include path="yellow_new_base_a.xml"/>
+    <include path="yellow_new_s.xml"/>
+    <include path="yellow_new_ss.xml"/>
+    <include path="yellow_panel_simple.xml"/>
+    <include path="yellow_simple_m.xml"/>
+    <!-- Description of Node Models (used by Groot) -->
+    <TreeNodesModel>
+        <Action ID="AddObstacle" editable="true">
+            <input_port name="label"/>
+            <input_port name="polygon"/>
+        </Action>
+        <Action ID="Aruco" editable="true">
+            <input_port name="camera_select" default="front"/>
+        </Action>
+        <Action ID="CanbusSend" editable="true">
+            <input_port name="can_id">For example, 0x12345</input_port>
+            <input_port name="message">For example, 0x32;0x34</input_port>
+        </Action>
+        <Action ID="FollowPath" editable="true">
+            <input_port name="path"/>
+        </Action>
+        <Action ID="JointPosition" editable="true">
+            <input_port name="instance"/>
+            <input_port name="max_effort" default="0"/>
+            <input_port name="max_velocity" default="180"/>
+            <input_port name="position"/>
+            <input_port name="tolerance" default="10"/>
+            <output_port name="feedback_effort" default="{feedback_effort}"/>
+            <output_port name="feedback_position" default="{feedback_position}"/>
+            <output_port name="result" default="{result}"/>
+            <input_port name="command_mode" default="0"/>
+        </Action>
+        <Action ID="Move" editable="true">
+            <input_port name="goal"/>
+            <inout_port name="ignore_obstacles" default="false"/>
+            <input_port name="linear_velocity" default="0.5"/>
+            <input_port name="frame_id" default="map"/>
+            <input_port name="angular_velocity" default="1.0"/>
+            <input_port name="mode" default="7"/>
+            <input_port name="linear_acceleration" default="0.8"/>
+            <input_port name="angular_acceleration" default="1.8"/>
+            <input_port name="reversing" default="0"/>
+        </Action>
+        <Action ID="Navigate" editable="true">
+            <input_port name="behavior_tree"/>
+            <input_port name="goal"/>
+        </Action>
+        <Action ID="PlantDetected" editable="true">
+            <input_port name="plant_position"/>
+        </Action>
+        <Action ID="Pump" editable="true">
+            <input_port name="connect" default="1"/>
+            <input_port name="instance"/>
+        </Action>
+        <Action ID="RemoveObstacle" editable="true">
+            <input_port name="label"/>
+        </Action>
+        <Action ID="Rotate" editable="true">
+            <input_port name="angle"/>
+            <input_port name="angular_velocity" default="1.5"/>
+            <input_port name="frame_id" default="base_link"/>
+            <input_port name="ignore_obstacles" default="false"/>
+            <input_port name="error" default="{error}"/>
+            <input_port name="angular_acceleration" default="1.8"/>
+        </Action>
+        <Action ID="ScoreboardTask" editable="true">
+            <input_port name="points" default="0">points scored, can be negative</input_port>
+            <input_port name="task" default="store_sample_to_work_shed">unique task name</input_port>
+        </Action>
+        <Action ID="SetSharedBlackboard" editable="true">
+            <input_port name="output_key">Key</input_port>
+            <input_port name="value">Value</input_port>
+        </Action>
+        <Control ID="TaskSequence" editable="true"/>
+        <Action ID="Translate" editable="true">
+            <input_port name="frame_id" default="base_link"/>
+            <input_port name="ignore_obstacles" default="false"/>
+            <input_port name="x"/>
+            <input_port name="error" default="{error}"/>
+            <input_port name="linear_velocity" default="0.5"/>
+            <input_port name="linear_acceleration" default="0.8"/>
+            <input_port name="enable_sensors" default="false"/>
+        </Action>
+        <Action ID="Wait" editable="true">
+            <input_port name="duration"/>
+        </Action>
+        <Action ID="WaitMatchStart" editable="true">
+            <input_port name="state" default="2">0 = unarmed; 1 = armed; 2 = started</input_port>
+        </Action>
+    </TreeNodesModel>
+</root>

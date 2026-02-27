@@ -1,0 +1,87 @@
+#! /usr/bin/env python
+# encoding: utf-8
+
+'''
+@author: Milos Subotic <milos.subotic.sm@gmail.com>
+@license: MIT
+
+'''
+
+###############################################################################
+
+import os
+import sys
+import fnmatch
+import shutil
+import datetime
+import glob
+
+import waflib
+
+###############################################################################
+
+top = '.'
+
+###############################################################################
+
+def prerequisites(ctx):
+	if sys.platform.startswith('linux'):
+		# Ubuntu.
+		#ctx.exec_command2('apt-get -y install ')
+		pass
+	elif sys.platform == 'win32' and os.name == 'nt' and os.path.sep == '/':
+		# MSYS2 Windows /mingw32/bin/python.
+		#ctx.exec_command2('pacman --noconfirm -S ')
+		pass
+
+def options(opt):
+	opt.load('gcc gxx')
+	
+def configure(cfg):
+	cfg.load('gcc gxx')
+	
+	cfg.env.append_value('CFLAGS', '-std=c99')
+	cfg.env.append_value('CXXFLAGS', '-std=c++17')
+
+
+def build(bld):
+	bld.program(
+		features = 'cxx',
+		includes = '.',
+		source = ['test_uart_chassis.cpp', 'SerialCPP.cpp'],
+		target = 'test_uart_chassis'
+	)
+
+	bld.program(
+        features = 'cxx',
+        includes = '.',
+        source = ['stop_uart_chassis.cpp', 'SerialCPP.cpp'],
+        target = 'stop_uart_chassis'
+    )
+
+
+def run(ctx):
+	#ctx.exec_command2('serial_on')
+	#ctx.exec_command2('ls -ll /dev/ttyUSB0')
+	#ctx.exec_command2('sleep 1')
+	#ctx.exec_command2('ls -ll /dev/ttyUSB0')
+	ctx.exec_command2('./build/test_uart_chassis')
+	#ctx.exec_command2('serial_off')
+
+
+def stop(ctx):
+    ctx.exec_command2('./build/stop_uart_chassis')
+
+
+###############################################################################
+
+def exec_command2(self, cmd, **kw):
+	# Log output while running command.
+	kw['stdout'] = None
+	kw['stderr'] = None
+	ret = self.exec_command(cmd, **kw)
+	if ret != 0:
+		self.fatal('Command "{}" returned {}'.format(cmd, ret))
+setattr(waflib.Context.Context, 'exec_command2', exec_command2)
+
+###############################################################################

@@ -1,0 +1,5 @@
+if(EXISTS "/home/petar/Documents/FAKS/Projekti/reson/build/window_test[1]_tests.cmake")
+  include("/home/petar/Documents/FAKS/Projekti/reson/build/window_test[1]_tests.cmake")
+else()
+  add_test(window_test_NOT_BUILT window_test_NOT_BUILT)
+endif()
